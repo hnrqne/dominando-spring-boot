@@ -1,10 +1,13 @@
 package hnrqne.demo.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hnrqne.demo.domain.Anime;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 @RestController
 @RequestMapping(path = {"v1/animes", "v1/animes/"})
@@ -12,7 +15,7 @@ import java.util.List;
 public class AnimeController {
 
     @GetMapping
-    public List<Anime> list(@RequestParam(required = false) String name){
+    public List<Anime> list(@RequestParam(required = false) String name) throws JsonProcessingException {
         log.info("Request received to list all animes, param name '{}'", name);
         var animes = Anime.getAnimes();
         if(name == null) return animes;
@@ -27,5 +30,12 @@ public class AnimeController {
                 .filter(anime -> anime.getId().equals(id))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @PostMapping
+    public Anime save(@RequestBody Anime anime){
+        anime.setId(ThreadLocalRandom.current().nextLong(100_000));
+        Anime.getAnimes().add(anime);
+        return anime;
     }
 }
