@@ -11,12 +11,12 @@ import java.util.concurrent.ThreadLocalRandom;
 public class HelloController {
 
     @GetMapping("hi")
-    public String hi(){
+    public String hi() {
         return "OMAE WA MO SHINDEIRU";
     }
 
     @PostMapping
-    public Long save(@RequestBody String name){
+    public Long save(@RequestBody String name) {
         log.info("Saving name '{}'", name);
         return ThreadLocalRandom.current().nextLong();
     }

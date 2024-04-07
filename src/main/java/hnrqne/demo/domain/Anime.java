@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,14 +19,16 @@ public class Anime {
     private String name;
 
     private static List<Anime> animes = new ArrayList<>();
+
     static {
-        var jigokuraku = new Anime(1L,"Jigokuraku");
-        var konosuba = new Anime(2L,"Konosuba");
-        var drStone = new Anime(3L,"Dr.Stone");
+        var jigokuraku = new Anime(1L, "Jigokuraku");
+        var konosuba = new Anime(2L, "Konosuba");
+        var drStone = new Anime(3L, "Dr.Stone");
         animes.addAll(List.of(jigokuraku, konosuba, drStone));
     }
 
     public static List<Anime> getAnimes() {
         return animes;
     }
+
 }
