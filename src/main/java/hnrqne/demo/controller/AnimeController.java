@@ -1,6 +1,5 @@
 package hnrqne.demo.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import hnrqne.demo.domain.Anime;
 import hnrqne.demo.mapper.AnimeMapper;
 import hnrqne.demo.request.AnimePostRequest;
@@ -10,6 +9,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class AnimeController {
     private static final AnimeMapper MAPPER = AnimeMapper.INSTANCE;
 
     @GetMapping
-    public ResponseEntity<List<AnimeGetResponse>> list(@RequestParam(required = false) String name) throws JsonProcessingException {
+    public ResponseEntity<List<AnimeGetResponse>> list(@RequestParam(required = false) String name) {
         log.info("Request received to list all animes, param name '{}'", name);
         var animes = Anime.getAnimes();
         var animeGetResponses = MAPPER.toAnimeGetResponses(animes);
@@ -43,7 +43,7 @@ public class AnimeController {
                 .stream()
                 .filter(anime -> anime.getId().equals(id))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime not found"));
 
         var response = MAPPER.toAnimeGetResponse(animeFound);
 
