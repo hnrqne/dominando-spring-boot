@@ -3,6 +3,7 @@ package hnrqne.demo.controller;
 import hnrqne.demo.domain.Producer;
 import hnrqne.demo.mapper.ProducerMapper;
 import hnrqne.demo.request.ProducerPostRequest;
+import hnrqne.demo.request.ProducerPutRequest;
 import hnrqne.demo.response.ProducerGetResponse;
 import hnrqne.demo.response.ProducerPostResponse;
 import lombok.extern.log4j.Log4j2;
@@ -59,6 +60,23 @@ public class ProducerController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producer not found to be deleted"));
 
         Producer.getProducers().remove(producerFound);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping()
+    public ResponseEntity<Void> update(@RequestBody ProducerPutRequest request) {
+        log.info("Request received to update the producer '{}'", request);
+
+        var producerToRemove = Producer.getProducers()
+                .stream()
+                .filter(producer -> producer.getId().equals(request.getId()))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producer not found to be updated"));
+
+        var producerUpdated = MAPPER.toProducer(request, producerToRemove.getCreatedAt());
+        Producer.getProducers().remove(producerToRemove);
+        Producer.getProducers().add(producerUpdated);
+
         return ResponseEntity.noContent().build();
     }
 }
