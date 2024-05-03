@@ -3,6 +3,7 @@ package hnrqne.demo.controller;
 import hnrqne.demo.domain.Anime;
 import hnrqne.demo.mapper.AnimeMapper;
 import hnrqne.demo.request.AnimePostRequest;
+import hnrqne.demo.request.AnimePutRequest;
 import hnrqne.demo.response.AnimeGetResponse;
 import hnrqne.demo.response.AnimePostResponse;
 import lombok.extern.log4j.Log4j2;
@@ -73,6 +74,23 @@ public class AnimeController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime not found to be deleted"));
 
         Anime.getAnimes().remove(animeFound);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @PutMapping
+    public ResponseEntity<Void> update(@RequestBody AnimePutRequest request) {
+        log.info("Request received to update the anime '{}'", request);
+
+        var animeToRemove = Anime.getAnimes()
+                .stream()
+                .filter(anime -> anime.getId().equals(request.getId()))
+                .findFirst()
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime not found to be updated"));
+
+        var animeUpdated = MAPPER.toAnime(request);
+        Anime.getAnimes().remove(animeToRemove);
+        Anime.getAnimes().add(animeUpdated);
+
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
