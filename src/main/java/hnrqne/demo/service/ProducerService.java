@@ -38,6 +38,6 @@ public class ProducerService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producer not found to be updated"));
 
         producerToUpdate.setCreatedAt(producer.getCreatedAt());
-        repository.update(producer);
+        repository.update(producerToUpdate);
     }
 }
