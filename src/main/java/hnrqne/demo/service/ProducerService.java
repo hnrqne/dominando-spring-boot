@@ -2,18 +2,19 @@ package hnrqne.demo.service;
 
 import hnrqne.demo.domain.Producer;
 import hnrqne.demo.repository.ProducerHardCodedRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
+@RequiredArgsConstructor
 public class ProducerService {
-    private ProducerHardCodedRepository repository;
 
-    public ProducerService() {
-        this.repository = new ProducerHardCodedRepository();
-    }
+    private final ProducerHardCodedRepository repository;
 
     public List<Producer> findAll(String name){
         return repository.findByName(name);
