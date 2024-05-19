@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProducerController {
 
-    private static final ProducerMapper MAPPER = ProducerMapper.INSTANCE;
+    private final ProducerMapper mapper;
 
     private final ProducerService producerService;
 
@@ -31,7 +31,7 @@ public class ProducerController {
 
         var producers = producerService.findAll(name);
 
-        var producerGetResponses = MAPPER.toProducerGetResponses(producers);
+        var producerGetResponses = mapper.toProducerGetResponses(producers);
 
         return ResponseEntity.ok(producerGetResponses);
     }
@@ -40,11 +40,11 @@ public class ProducerController {
             headers = "x-api-version=v1")
     public ResponseEntity<ProducerPostResponse> save(@RequestBody ProducerPostRequest request) {
 
-        var producer = MAPPER.toProducer(request);
+        var producer = mapper.toProducer(request);
 
         producer = producerService.save(producer);
 
-        var response = MAPPER.toProducerPostResponse(producer);
+        var response = mapper.toProducerPostResponse(producer);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
@@ -62,7 +62,7 @@ public class ProducerController {
     public ResponseEntity<Void> update(@RequestBody ProducerPutRequest request) {
         log.info("Request received to update the producer '{}'", request);
 
-        var producerToUpdated = MAPPER.toProducer(request);
+        var producerToUpdated = mapper.toProducer(request);
 
         producerService.update(producerToUpdated);
 
