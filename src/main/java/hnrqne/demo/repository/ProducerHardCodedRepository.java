@@ -1,7 +1,11 @@
 package hnrqne.demo.repository;
 
 import hnrqne.demo.domain.Producer;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
+import test.outside.Connection;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -9,9 +13,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
+@Log4j2
 public class ProducerHardCodedRepository {
 
     private static final List<Producer> PRODUCERS = new ArrayList<>();
+
+    @Qualifier(value = "mongoDB")
+    private final Connection connection;
 
     static {
         var mappa = Producer.builder().id(1L).name("MAPPA").createdAt(LocalDateTime.now()).build();
@@ -29,6 +38,7 @@ public class ProducerHardCodedRepository {
     }
 
     public List<Producer> findByName(String name){
+        log.info(connection);
         return name == null ? PRODUCERS :
                 PRODUCERS.stream()
                         .filter(producer -> producer.getName().equalsIgnoreCase(name))
