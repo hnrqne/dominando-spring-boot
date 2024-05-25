@@ -60,7 +60,7 @@ class ProducerHardCodedRepositoryTest {
     }
 
     @Test
-    @DisplayName("findByName() returns list with filtered producers name when is not null")
+    @DisplayName("findByName() returns list with filtered producers when name is not null")
     @Order(4)
     void findByName_ReturnsFilteredProducers_WhenNameIsNotNull(){
         var producers = repository.findByName("Ufotable");
@@ -79,19 +79,19 @@ class ProducerHardCodedRepositoryTest {
     @DisplayName("save() creates a producer")
     @Order(6)
     void save_CreatesProducer_WhenSucessful(){
-        var producerToSaved = Producer.builder()
+        var producerToSave = Producer.builder()
                 .id(99L)
                 .name("MAPPA")
                 .createdAt(LocalDateTime.now())
                 .build();
-        var producer = repository.save(producerToSaved);
+        var producer = repository.save(producerToSave);
 
         Assertions.assertThat(producer)
-                .isEqualTo(producerToSaved)
+                .isEqualTo(producerToSave)
                 .hasNoNullFieldsOrProperties();
 
         var producers = repository.findAll();
-        Assertions.assertThat(producers).contains(producerToSaved);
+        Assertions.assertThat(producers).contains(producerToSave);
     }
 
     @Test
