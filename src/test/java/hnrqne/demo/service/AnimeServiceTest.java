@@ -106,6 +106,7 @@ class AnimeServiceTest {
                 .id(99L)
                 .name("Nana")
                 .build();
+
         BDDMockito.when(repository.save(animeToSave)).thenReturn(animeToSave);
         var anime = service.save(animeToSave);
 
